@@ -20,7 +20,6 @@ import org.eclipse.microprofile.openapi.annotations.media.*;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import br.edu.fiap.cartoes.domain.model.StatusSolicitacao;
-import br.edu.fiap.cartoes.usecase.*;
 import br.edu.fiap.cartoes.infrastructure.config.UsuarioAtual;
 
 /**

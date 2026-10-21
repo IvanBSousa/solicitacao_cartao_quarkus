@@ -1,6 +1,6 @@
 package br.edu.fiap.cartoes.presenter.resource;
 
-import br.edu.fiap.cartoes.application.usecase.AutenticacaoUseCase;
+import br.edu.fiap.cartoes.application.usecase.AutenticacaoUseCaseImpl;
 import br.edu.fiap.cartoes.presenter.dto.ErroResponse;
 import br.edu.fiap.cartoes.presenter.dto.LoginRequest;
 import br.edu.fiap.cartoes.presenter.dto.TokenResponse;
@@ -14,7 +14,6 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.eclipse.microprofile.openapi.annotations.responses.*;
 import org.eclipse.microprofile.openapi.annotations.media.*;
-import br.edu.fiap.cartoes.usecase.*;
 
 /**
  * Camada controller pronta: traduz HTTP, valida o contrato e delega à aplicação.
@@ -28,7 +27,7 @@ import br.edu.fiap.cartoes.usecase.*;
 @PermitAll
 public class AutenticacaoResource {
     @Inject
-    AutenticacaoUseCase autenticacao;
+    AutenticacaoUseCaseImpl autenticacao;
 
     /** Pública. Buscar usuário por JPA, conferir BCrypt e emitir HS256 com usuarioId e expiração de 900 segundos. Senha ou e-mail incorretos geram o mesmo 401. */
     @POST

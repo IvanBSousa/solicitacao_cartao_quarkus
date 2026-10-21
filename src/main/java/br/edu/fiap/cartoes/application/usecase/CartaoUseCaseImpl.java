@@ -10,7 +10,7 @@ import br.edu.fiap.cartoes.infrastructure.exception.EtapaNaoImplementadaExceptio
  * a dependência de DTO HTTP por entradas/saídas da aplicação e portas de saída.
  */
 @ApplicationScoped
-public class CartaoUseCase {
+public class CartaoUseCaseImpl {
     /** JPQL com relacionamento cartão -> solicitação -> usuário e tipo; somente cartões próprios. */
     public List<CartaoResponse> listar(Long usuarioId) {
         // TODO: implementar sem colocar SQL ou regras no controller.
