@@ -30,6 +30,12 @@ public class UsuarioRepositoryJpa implements UsuarioRepository {
 
     @Override
     @Transactional
+    public Optional<Usuario> buscarPorId(Long id) {
+        return Optional.ofNullable(entityManager.find(Usuario.class, id));
+    }
+
+    @Override
+    @Transactional
     public boolean existePorEmail(String email){
         return buscaPorEmail(email).isPresent();
     }

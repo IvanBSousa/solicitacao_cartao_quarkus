@@ -11,7 +11,7 @@ import java.util.Optional;
  * porta da aplicação, sem tipos de EntityManager, ResultSet ou DTO HTTP.
  */
 public interface UsuarioRepository {
-
+    Optional<Usuario> buscarPorId(Long id);
     boolean existePorEmail(String email);
     Usuario cadastrar(Usuario usuario);
     Optional<Usuario> buscaPorEmail(String email);

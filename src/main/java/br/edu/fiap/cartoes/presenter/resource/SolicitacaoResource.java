@@ -1,7 +1,7 @@
 package br.edu.fiap.cartoes.presenter.resource;
 import java.util.List;
 
-import br.edu.fiap.cartoes.application.usecase.SolicitacaoUseCase;
+import br.edu.fiap.cartoes.application.usecase.SolicitacaoUseCaseImpl;
 import br.edu.fiap.cartoes.presenter.dto.CartaoResponse;
 import br.edu.fiap.cartoes.presenter.dto.ErroResponse;
 import br.edu.fiap.cartoes.presenter.dto.SolicitacaoRequest;
@@ -35,7 +35,7 @@ import br.edu.fiap.cartoes.infrastructure.config.UsuarioAtual;
 @SecurityRequirement(name="bearerAuth")
 public class SolicitacaoResource {
     @Inject
-    SolicitacaoUseCase solicitacoes;
+    SolicitacaoUseCaseImpl solicitacoes;
     @Inject UsuarioAtual usuarioAtual;
 
     /** Protegida. JPA. Titular vem do JWT. Tipo precisa existir e estar disponível; negar pedido PENDENTE duplicado do mesmo titular e tipo. Estado inicial PENDENTE. */

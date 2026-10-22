@@ -1,46 +1,14 @@
 package br.edu.fiap.cartoes.application.usecase;
-import br.edu.fiap.cartoes.presenter.dto.CartaoResponse;
-import br.edu.fiap.cartoes.presenter.dto.SolicitacaoRequest;
-import br.edu.fiap.cartoes.presenter.dto.SolicitacaoResponse;
-import jakarta.enterprise.context.ApplicationScoped;
-import java.util.List;
 
 import br.edu.fiap.cartoes.domain.model.StatusSolicitacao;
-import br.edu.fiap.cartoes.infrastructure.exception.EtapaNaoImplementadaException;
-/**
- * Camada de aplicação a implementar: coordena uma operação, suas regras e transação.
- * O controller já chama estas assinaturas. Na migração para Clean, substituam
- * a dependência de DTO HTTP por entradas/saídas da aplicação e portas de saída.
- */
-@ApplicationScoped
-public class SolicitacaoUseCase {
-    /** Buscar titular e tipo por JPA; tipo indisponível ou pedido pendente duplicado gera 409. */
-    public SolicitacaoResponse criar(Long usuarioId, SolicitacaoRequest request) {
-        // TODO: implementar sem colocar SQL ou regras no controller.
-        throw new EtapaNaoImplementadaException("SolicitacaoUseCase.criar");
-    }
+import br.edu.fiap.cartoes.presenter.dto.SolicitacaoRequest;
+import br.edu.fiap.cartoes.presenter.dto.SolicitacaoResponse;
 
-    /** JPQL própria com filtro de titular e status opcional, nunca listar todos os usuários. */
-    public List<SolicitacaoResponse> listar(Long usuarioId, StatusSolicitacao status) {
-        // TODO: implementar sem colocar SQL ou regras no controller.
-        throw new EtapaNaoImplementadaException("SolicitacaoUseCase.listar");
-    }
+import java.util.List;
 
-    /** Buscar por id E titular; retornar 404 para pedido de outro usuário. */
-    public SolicitacaoResponse buscar(Long usuarioId, Long id) {
-        // TODO: implementar sem colocar SQL ou regras no controller.
-        throw new EtapaNaoImplementadaException("SolicitacaoUseCase.buscar");
-    }
-
-    /** Em transação, buscar o próprio pedido e chamar cancelar; estado diferente de PENDENTE gera 409. */
-    public SolicitacaoResponse cancelar(Long usuarioId, Long id) {
-        // TODO: implementar sem colocar SQL ou regras no controller.
-        throw new EtapaNaoImplementadaException("SolicitacaoUseCase.cancelar");
-    }
-
-    /** Em uma transação, bloquear o pedido para escrita, conferir titular/estado, criar cartão e marcar EMITIDA. */
-    public CartaoResponse emitir(Long usuarioId, Long id) {
-        // TODO: implementar sem colocar SQL ou regras no controller.
-        throw new EtapaNaoImplementadaException("SolicitacaoUseCase.emitir");
-    }
+public interface SolicitacaoUseCase {
+    SolicitacaoResponse criar(Long usuarioId, SolicitacaoRequest request);
+    List<SolicitacaoResponse> listar(Long usuarioId, StatusSolicitacao status);
+    SolicitacaoResponse buscar(Long usuarioId, Long id);
+    SolicitacaoResponse cancelar(Long usuarioId, Long id);
 }

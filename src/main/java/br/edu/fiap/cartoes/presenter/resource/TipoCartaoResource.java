@@ -1,7 +1,7 @@
 package br.edu.fiap.cartoes.presenter.resource;
 import java.util.List;
 
-import br.edu.fiap.cartoes.application.usecase.TipoCartaoUseCase;
+import br.edu.fiap.cartoes.application.usecase.TipoCartaoUseCaseImpl;
 import br.edu.fiap.cartoes.presenter.dto.ErroResponse;
 import br.edu.fiap.cartoes.presenter.dto.TipoCartaoResponse;
 import jakarta.inject.Inject;
@@ -29,7 +29,7 @@ import br.edu.fiap.cartoes.infrastructure.config.UsuarioAtual;
 @SecurityRequirement(name="bearerAuth")
 public class TipoCartaoResource {
     @Inject
-    TipoCartaoUseCase tipos;
+    TipoCartaoUseCaseImpl tipos;
     @Inject UsuarioAtual usuarioAtual;
 
     /** Protegida. Única rota JDBC do desafio. PreparedStatement deve filtrar disponivel=true e ordenar por nome; retornar lista vazia quando não houver oferta. */

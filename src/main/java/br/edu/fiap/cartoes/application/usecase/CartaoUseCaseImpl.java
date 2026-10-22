@@ -1,4 +1,5 @@
 package br.edu.fiap.cartoes.application.usecase;
+import br.edu.fiap.cartoes.application.ports.CartaoRepository;
 import br.edu.fiap.cartoes.presenter.dto.CartaoResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
@@ -10,10 +11,18 @@ import br.edu.fiap.cartoes.infrastructure.exception.EtapaNaoImplementadaExceptio
  * a dependência de DTO HTTP por entradas/saídas da aplicação e portas de saída.
  */
 @ApplicationScoped
-public class CartaoUseCaseImpl {
+public class CartaoUseCaseImpl implements CartaoUseCase{
+    private final CartaoRepository repository;
+
+    public CartaoUseCaseImpl(CartaoRepository repository) {
+        this.repository = repository;
+    }
+
     /** JPQL com relacionamento cartão -> solicitação -> usuário e tipo; somente cartões próprios. */
+    @Override
     public List<CartaoResponse> listar(Long usuarioId) {
-        // TODO: implementar sem colocar SQL ou regras no controller.
-        throw new EtapaNaoImplementadaException("CartaoUseCase.listar");
+        return repository.listarPorUsuario(usuarioId).stream()
+                .map(CartaoResponse::de)
+                .toList();
     }
 }
