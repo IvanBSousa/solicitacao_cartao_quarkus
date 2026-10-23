@@ -1,6 +1,6 @@
 package br.edu.fiap.cartoes.presenter.resource;
 
-import br.edu.fiap.cartoes.application.usecase.AutenticacaoUseCaseImpl;
+import br.edu.fiap.cartoes.application.usecase.AutenticacaoUseCase;
 import br.edu.fiap.cartoes.presenter.dto.ErroResponse;
 import br.edu.fiap.cartoes.presenter.dto.LoginRequest;
 import br.edu.fiap.cartoes.presenter.dto.TokenResponse;
@@ -27,7 +27,7 @@ import org.eclipse.microprofile.openapi.annotations.media.*;
 @PermitAll
 public class AutenticacaoResource {
     @Inject
-    AutenticacaoUseCaseImpl autenticacao;
+    AutenticacaoUseCase autenticacao;
 
     /** Pública. Buscar usuário por JPA, conferir BCrypt e emitir HS256 com usuarioId e expiração de 900 segundos. Senha ou e-mail incorretos geram o mesmo 401. */
     @POST

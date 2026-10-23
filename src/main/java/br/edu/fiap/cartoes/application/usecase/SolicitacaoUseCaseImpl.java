@@ -9,14 +9,12 @@ import br.edu.fiap.cartoes.domain.model.Cartao;
 import br.edu.fiap.cartoes.domain.model.SolicitacaoCartao;
 import br.edu.fiap.cartoes.domain.model.TipoCartao;
 import br.edu.fiap.cartoes.domain.model.Usuario;
-import br.edu.fiap.cartoes.infrastructure.config.UsuarioAtual;
 import br.edu.fiap.cartoes.infrastructure.exception.RecursoNaoEncontradoException;
 import br.edu.fiap.cartoes.presenter.dto.CartaoResponse;
 import br.edu.fiap.cartoes.presenter.dto.SolicitacaoRequest;
 import br.edu.fiap.cartoes.presenter.dto.SolicitacaoResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
-import java.util.Objects;
 
 import br.edu.fiap.cartoes.domain.model.StatusSolicitacao;
 
@@ -31,14 +29,16 @@ public class SolicitacaoUseCaseImpl implements SolicitacaoUseCase{
     private final SolicitacaoCartaoRepository solicitacaoRepository;
     private final TipoCartaoRepository tipoCartaoRepository;
     private final UsuarioRepository usuarioRepository;
-    private final UsuarioAtual usuarioAtual;
     private final CartaoRepository cartaoRepository;
 
-    public SolicitacaoUseCaseImpl(SolicitacaoCartaoRepository solicitacaoRepository, TipoCartaoRepository tipoCartaoRepository, UsuarioRepository usuarioRepository, UsuarioAtual usuarioAtual, CartaoRepository cartaoRepository) {
+    public SolicitacaoUseCaseImpl(
+            SolicitacaoCartaoRepository solicitacaoRepository,
+            TipoCartaoRepository tipoCartaoRepository,
+            UsuarioRepository usuarioRepository,
+            CartaoRepository cartaoRepository) {
         this.solicitacaoRepository = solicitacaoRepository;
         this.tipoCartaoRepository = tipoCartaoRepository;
         this.usuarioRepository = usuarioRepository;
-        this.usuarioAtual = usuarioAtual;
         this.cartaoRepository = cartaoRepository;
     }
 
@@ -56,8 +56,15 @@ public class SolicitacaoUseCaseImpl implements SolicitacaoUseCase{
 
     /** JPQL própria com filtro de titular e status opcional, nunca listarPorUsuario todos os usuários. */
     @Override
-    public List<SolicitacaoResponse> listar(Long usuarioId, StatusSolicitacao status) {
+    public List<SolicitacaoResponse> listarComStatus(Long usuarioId, StatusSolicitacao status) {
         return solicitacaoRepository.listarPorUsuarioEStatus(usuarioId, status).stream()
+                .map(SolicitacaoResponse::de)
+                .toList();
+    }
+
+    @Override
+    public List<SolicitacaoResponse> listarSemStatus(Long usuarioId) {
+        return solicitacaoRepository.listarPorUsuario(usuarioId).stream()
                 .map(SolicitacaoResponse::de)
                 .toList();
     }
@@ -80,6 +87,7 @@ public class SolicitacaoUseCaseImpl implements SolicitacaoUseCase{
     }
 
     /** Em uma transação, bloquear o pedido para escrita, conferir titular/estado, criar cartão e marcar EMITIDA. */
+    @Override
     public CartaoResponse emitir(Long usuarioId, Long id) {
         SolicitacaoCartao solicitacao = encontraSolicitacao(usuarioId, id);
 
@@ -92,12 +100,10 @@ public class SolicitacaoUseCaseImpl implements SolicitacaoUseCase{
     }
 
     private SolicitacaoCartao encontraSolicitacao(Long usuarioId, Long id) {
-        if(!Objects.equals(usuarioAtual.id(), usuarioId)) {
-            throw new RecursoNaoEncontradoException("Solicitação não encontrada");
-        }
 
         return solicitacaoRepository.listarPorUsuario(usuarioId).stream()
-                .findFirst()
+                .filter(solicitacao -> solicitacao.getId().equals(id))
+                .findAny()
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Solicitação não encontrada"));
     }
 }

@@ -1,7 +1,7 @@
 package br.edu.fiap.cartoes.presenter.resource;
 import java.util.List;
 
-import br.edu.fiap.cartoes.application.usecase.CartaoUseCaseImpl;
+import br.edu.fiap.cartoes.application.usecase.CartaoUseCase;
 import br.edu.fiap.cartoes.presenter.dto.CartaoResponse;
 import br.edu.fiap.cartoes.presenter.dto.ErroResponse;
 import jakarta.inject.Inject;
@@ -29,7 +29,7 @@ import br.edu.fiap.cartoes.infrastructure.config.UsuarioAtual;
 @SecurityRequirement(name="bearerAuth")
 public class CartaoResource {
     @Inject
-    CartaoUseCaseImpl cartoes;
+    CartaoUseCase cartoes;
     @Inject UsuarioAtual usuarioAtual;
 
     /** Protegida. JPQL personalizada ligando cartão, solicitação, usuário e tipo. Filtrar pelo titular do JWT e retornar dados pelo DTO, sem senha ou entidades aninhadas. */

@@ -1,7 +1,6 @@
 package br.edu.fiap.cartoes.infrastructure.repository;
 import br.edu.fiap.cartoes.application.ports.CartaoRepository;
 import br.edu.fiap.cartoes.domain.model.Cartao;
-import br.edu.fiap.cartoes.presenter.dto.CartaoResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;

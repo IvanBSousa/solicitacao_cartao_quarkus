@@ -14,6 +14,7 @@ import br.edu.fiap.cartoes.infrastructure.exception.RecursoNaoEncontradoExceptio
 import br.edu.fiap.cartoes.presenter.dto.SolicitacaoResponse;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,10 +36,12 @@ class SolicitacaoUseCaseTest {
         UsuarioAtual usuarioAtual = mock(UsuarioAtual.class);
         CartaoRepository cartaoRepository = mock(CartaoRepository.class);
         SolicitacaoCartao solicitacao = novaSolicitacao(StatusSolicitacao.PENDENTE);
-        when(solicitacaoRepository.buscarPorId(10L)).thenReturn(Optional.of(solicitacao));
+        when(solicitacaoRepository.listarPorUsuario(1L)).thenReturn(List.of(solicitacao));
+        when(solicitacaoRepository.salvar(solicitacao)).thenReturn(solicitacao);
+        when(usuarioAtual.id()).thenReturn(1L);
 
         SolicitacaoUseCaseImpl useCase = new SolicitacaoUseCaseImpl(
-                solicitacaoRepository, tipoCartaoRepository, usuarioRepository, usuarioAtual, cartaoRepository
+                solicitacaoRepository, tipoCartaoRepository, usuarioRepository, cartaoRepository
         );
 
         SolicitacaoResponse resposta = useCase.cancelar(1L, 10L);
@@ -52,13 +55,12 @@ class SolicitacaoUseCaseTest {
         SolicitacaoCartaoRepository solicitacaoRepository = mock(SolicitacaoCartaoRepository.class);
         TipoCartaoRepository tipoCartaoRepository = mock(TipoCartaoRepository.class);
         UsuarioRepository usuarioRepository = mock(UsuarioRepository.class);
-        UsuarioAtual usuarioAtual = mock(UsuarioAtual.class);
         CartaoRepository cartaoRepository = mock(CartaoRepository.class);
         SolicitacaoCartao solicitacao = novaSolicitacao(StatusSolicitacao.EMITIDA);
         when(solicitacaoRepository.buscarPorId(10L)).thenReturn(Optional.of(solicitacao));
 
         SolicitacaoUseCaseImpl useCase = new SolicitacaoUseCaseImpl(
-                solicitacaoRepository, tipoCartaoRepository, usuarioRepository, usuarioAtual, cartaoRepository
+                solicitacaoRepository, tipoCartaoRepository, usuarioRepository, cartaoRepository
         );
 
         assertThrows(RecursoNaoEncontradoException.class, () -> useCase.cancelar(1L, 10L));
@@ -68,8 +70,9 @@ class SolicitacaoUseCaseTest {
     }
 
     private SolicitacaoCartao novaSolicitacao(StatusSolicitacao status) {
-        //Usuario usuario = new Usuario(1L, "Cliente", "cliente@example.com", "hash", Instant.parse("2007-12-03T10:15:30.00Z"));
-        Usuario usuario = mock(Usuario.class);
+        Usuario usuario = new Usuario("Cliente", "cliente@example.com", "hash");
+        UsuarioRepository usuarioRepository = mock(UsuarioRepository.class);
+        usuarioRepository.cadastrar(usuario);
         TipoCartao tipoCartao = new TipoCartao("ESSENCIAL", "Cartão essencial", true);
         tipoCartao.setId(2L);
 

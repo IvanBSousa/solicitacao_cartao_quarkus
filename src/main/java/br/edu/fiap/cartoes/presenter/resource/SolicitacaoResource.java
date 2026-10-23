@@ -1,7 +1,7 @@
 package br.edu.fiap.cartoes.presenter.resource;
 import java.util.List;
 
-import br.edu.fiap.cartoes.application.usecase.SolicitacaoUseCaseImpl;
+import br.edu.fiap.cartoes.application.usecase.SolicitacaoUseCase;
 import br.edu.fiap.cartoes.presenter.dto.CartaoResponse;
 import br.edu.fiap.cartoes.presenter.dto.ErroResponse;
 import br.edu.fiap.cartoes.presenter.dto.SolicitacaoRequest;
@@ -35,7 +35,7 @@ import br.edu.fiap.cartoes.infrastructure.config.UsuarioAtual;
 @SecurityRequirement(name="bearerAuth")
 public class SolicitacaoResource {
     @Inject
-    SolicitacaoUseCaseImpl solicitacoes;
+    SolicitacaoUseCase solicitacoes;
     @Inject UsuarioAtual usuarioAtual;
 
     /** Protegida. JPA. Titular vem do JWT. Tipo precisa existir e estar disponível; negar pedido PENDENTE duplicado do mesmo titular e tipo. Estado inicial PENDENTE. */
@@ -63,7 +63,10 @@ public class SolicitacaoResource {
         @APIResponse(responseCode="501",description="Casca ainda não implementada",content=@Content(schema=@Schema(implementation=ErroResponse.class)))
     })
     public List<SolicitacaoResponse> listar(@QueryParam("status") @Parameter(description="Filtro opcional PENDENTE, CANCELADA ou EMITIDA") StatusSolicitacao status) {
-        return solicitacoes.listar(usuarioAtual.id(), status);
+        if(status == null) {
+            return solicitacoes.listarSemStatus(usuarioAtual.id());
+        }
+        return solicitacoes.listarComStatus(usuarioAtual.id(), status);
     }
 
     /** Protegida. JPA. Buscar por ID e titular conjuntamente; retornar 404 tanto para ID ausente quanto para pedido de outro usuário. */

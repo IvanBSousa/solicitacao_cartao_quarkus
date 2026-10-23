@@ -1,6 +1,6 @@
 package br.edu.fiap.cartoes.presenter.resource;
 
-import br.edu.fiap.cartoes.application.usecase.UsuarioUseCaseImpl;
+import br.edu.fiap.cartoes.application.usecase.UsuarioUseCase;
 import br.edu.fiap.cartoes.presenter.dto.ErroResponse;
 import br.edu.fiap.cartoes.presenter.dto.UsuarioRequest;
 import br.edu.fiap.cartoes.presenter.dto.UsuarioResponse;
@@ -27,7 +27,7 @@ import org.eclipse.microprofile.openapi.annotations.media.*;
 @PermitAll
 public class UsuarioResource {
     @Inject
-    UsuarioUseCaseImpl usuarios;
+    UsuarioUseCase usuarios;
 
     /** Pública. Validar entrada, normalizar e-mail, verificar unicidade, gerar BCrypt e persistir por JPA. Retornar somente dados públicos. */
     @POST
